@@ -1,0 +1,24 @@
+{
+  "name": "everwatching-panda",
+  "version": "1.0.0",
+  "description": "small dsicord bots to play a bit on server",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "deployCommands": "node deploy-commands.js",
+    "clearCommands": "node clear-commands.js"
+  },
+  "dependencies": {
+    "discord.js": "^14.11.0"
+  },
+  "engines": {
+    "node": "16.x"
+  },
+  "license": "MIT",
+  "keywords": [
+    "node",
+    "glitch",
+    "discord",
+    "bot"
+  ]
+}
