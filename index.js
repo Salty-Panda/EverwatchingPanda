@@ -1,6 +1,6 @@
 const fs = require('node:fs');
 const path = require('node:path');
-const { token } = require('./config.json');
+const { token, guildId, logChannelId } = require('./config.json');
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
 
 // Create a new client instance
