@@ -1,5 +1,6 @@
 const fs = require('node:fs');
 const path = require('node:path');
+const {token} = require('./config.json');
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
 
 // Create a new client instance
@@ -29,9 +30,9 @@ for (const folder of commandFolders) {
 client.once(Events.ClientReady, c => {
 	console.log(`Ready! Logged in as ${c.user.tag}`);
 });
-
+//console.log(token);
 // Log in to Discord with your client's token
-client.login(process.env.TOKEN);
+client.login(token);
 
 client.on(Events.InteractionCreate, async interaction => {
 	if (!interaction.isChatInputCommand()) return;

@@ -12,10 +12,11 @@ module.exports = {
 
 		const role = interaction.guild.roles.cache.find(role => role.id === '553347167583076372'); // Replace with the exact name of the role
 		if (role) {
-
+console.log(role.name);
 			const membersWithRole = role.members.filter(member => member.presence && member.presence.status);
 			const onlineCount = membersWithRole.size;
-
+console.log(membersWithRole.map(a => a.user.username));
+console.log(membersWithRole.map(a => a.presence? a.presence.status : "not active"));
 			if (onlineCount >= 1) {
 				let response;
 
