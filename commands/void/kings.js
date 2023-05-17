@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const {guildId, logChannelId} = require('../..config.json');
+const {guildId, logChannelId} = require('./../../config.json');
 
 module.exports = {
 	data: new SlashCommandBuilder()
