@@ -10,6 +10,7 @@ client.commands = new Collection();
 
 const foldersPath = path.join(__dirname, 'commands');
 const commandFolders = fs.readdirSync(foldersPath);
+let channel;
 
 for (const folder of commandFolders) {
 	const commandsPath = path.join(foldersPath, folder);
@@ -31,7 +32,7 @@ client.once(Events.ClientReady, c => {
 	console.log(`Ready! Logged in as ${c.user.tag}`);
 	const server = client.guilds.cache.get(guildId);
 	if (server) {
-		const channel = server.channels.cache.get(logChannelId);
+		channel = server.channels.cache.get(logChannelId);
 		if (channel) {
 			console.log(`Connected to dev channel: ${channel.name}`);
 			channel.send(`Bot is up and running`); // Replace the message content with the desired message
