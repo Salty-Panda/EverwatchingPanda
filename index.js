@@ -1,6 +1,6 @@
 const fs = require('node:fs');
 const path = require('node:path');
-const {token} = require('./config.json');
+const { token } = require('./config.json');
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
 
 // Create a new client instance
@@ -29,6 +29,19 @@ for (const folder of commandFolders) {
 // We use 'c' for the event parameter to keep it separate from the already defined 'client'
 client.once(Events.ClientReady, c => {
 	console.log(`Ready! Logged in as ${c.user.tag}`);
+	const server = client.guilds.cache.get(guildId);
+	if (server) {
+		const channel = server.channels.cache.get(logChannelId);
+		if (channel) {
+			console.log(`Connected to dev channel: ${channel.name}`);
+			channel.send(`Bot is up and running`); // Replace the message content with the desired message
+		} else {
+			console.log('Dev channel not found.');
+		}
+	} else {
+		console.log('Dev server not found.');
+	}
+
 });
 //console.log(token);
 // Log in to Discord with your client's token
@@ -45,7 +58,7 @@ client.on(Events.InteractionCreate, async interaction => {
 	}
 
 	try {
-		await command.execute(interaction);
+		await command.execute(interaction, channel);
 	} catch (error) {
 		console.error(error);
 		if (interaction.replied || interaction.deferred) {

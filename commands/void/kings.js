@@ -6,7 +6,7 @@ module.exports = {
 		.setName('kings')
 		.setDescription('Posts message about kings of undead'),
 	scope: 'global',
-	async execute(interaction) {
+	async execute(interaction, logChannel) {
 		// interaction.user is the object representing the User who ran the command
 		// interaction.member is the GuildMember object, which represents the user in the specific guild
 		// await interaction.reply(`This command was run by ${interaction.user.username}, who joined on ${interaction.member.joinedAt}.`);
@@ -19,17 +19,7 @@ module.exports = {
 			//console.log(membersWithRole.map(a => a.user.username));
 			//console.log(membersWithRole.map(a => a.presence ? a.presence.status : "not active"));
 
-			const server = client.guilds.cache.get(guildId);
-			if (server) {
-				const channel = server.channels.cache.get(logChannelId);
-				if (channel) {
-					channel.send(`${interaction.user.username} used 'kings'.\nOnline kings: ${membersWithRole.map(a => a.user.username).join(", ")}`); // Replace the message content with the desired message
-				} else {
-					console.log('Channel not found.');
-				}
-			} else {
-				console.log('Server not found.');
-			}
+		channel.send(`${interaction.user.username} used 'kings'.\nOnline kings: ${membersWithRole.map(a => a.user.username).join(", ")}`); 
 
 		if (onlineCount >= 1) {
 			let response;
