@@ -14,19 +14,15 @@ module.exports = {
 		if (role) {
 			//console.log(role.name);
 			const membersWithRole = role.members.filter(member => member.presence && member.presence.status);
-			//console.log(membersWithRole.map(a => a.user.username));
-			//console.log(membersWithRole.map(a => a.presence ? a.presence.status : "not active"));
-			let users = interaction.guild.members.fetch({user:[membersWithRole.map(a=>a.id)],withPresences:true, force:true});
+			let users = await interaction.guild.members.fetch({user:membersWithRole.map(a => a.user.id),withPresences:true, force:true});
+			let actuallyOnlineMembers = users.filter(member => member.presence && member.presence.status);
+			logChannel.send(`${interaction.user.username} used 'kings'.\nOnline kings according to cache: ${membersWithRole.map(a => (a.user.username+": "+a.presence.status)).join(", ")}\nActually online members: ${actuallyOnlineMembers.map(a => a.user.username).join(", ")}`);
 
-			let actuallyOnlineMembes = users.filter(member => member.presence && member.presence.status);
 
-			logChannel.send(`${interaction.user.username} used 'kings'.\nOnline kings according to cache: ${membersWithRole.map(a => (a.user.username+": "+a.presence.status)).join(", ")}\n
-			actually online members: ${actuallyOnlineMembes.map(a => a.user.username).join(", ")}`);
-
-		if (actuallyOnlineMembes.size >= 1) {
+		if (actuallyOnlineMembers.size >= 1) {
 			let response;
 
-			switch (actuallyOnlineMembes.size) {
+			switch (actuallyOnlineMembers.size) {
 				case 1:
 					response =
 						"There is only one king of undead online. Panda is sad.\n" +
