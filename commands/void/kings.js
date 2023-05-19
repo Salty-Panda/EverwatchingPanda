@@ -18,7 +18,7 @@ module.exports = {
 			//console.log(membersWithRole.map(a => a.user.username));
 			//console.log(membersWithRole.map(a => a.presence ? a.presence.status : "not active"));
 
-			logChannel.send(`${interaction.user.username} used 'kings'.\nOnline kings: ${membersWithRole.map(a => a.user.username).join(", ")}`); 
+			logChannel.send(`${interaction.user.username} used 'kings'.\nOnline kings: ${membersWithRole.map(a => (a.user.username+": "+a.presence.status)).join(", ")}`); 
 
 		if (onlineCount >= 1) {
 			let response;
