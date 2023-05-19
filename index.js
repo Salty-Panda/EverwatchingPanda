@@ -3,11 +3,11 @@ const path = require('node:path');
 const { token, guildId, logChannelId } = require('./config.json');
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
 
-// Create a new client instance
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildPresences] });
 
 client.commands = new Collection();
 
+// eslint-disable-next-line no-undef
 const foldersPath = path.join(__dirname, 'commands');
 const commandFolders = fs.readdirSync(foldersPath);
 let channel;
