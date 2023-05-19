@@ -13,10 +13,8 @@ module.exports = {
 		const role = interaction.guild.roles.cache.find(role => role.id === '553347167583076372'); // Replace with the exact name of the role
 		if (role) {
 			//console.log(role.name);
-			const membersWithRole = role.members.filter(member => member.presence && member.presence.status);
-			let users = await interaction.guild.members.fetch({user:membersWithRole.map(a => a.user.id),withPresences:true, force:true});
-			let actuallyOnlineMembers = users.filter(member => member.presence && member.presence.status);
-			logChannel.send(`${interaction.user.username} used 'kings'.\nOnline kings according to cache: ${membersWithRole.map(a => (a.user.username+": "+a.presence.status)).join(", ")}\nActually online members: ${actuallyOnlineMembers.map(a => a.user.username).join(", ")}`);
+			const membersWithRole = role.members.filter(member => member.presence && member.presence.status && member.presence.status !== "offline");
+			logChannel.send(`${interaction.user.username} used 'kings'.\nOnline kings according to cache: ${membersWithRole.map(a => (a.user.username+": "+a.presence.status)).join(", ")}`);
 
 
 		if (actuallyOnlineMembers.size >= 1) {
