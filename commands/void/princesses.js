@@ -8,7 +8,7 @@ module.exports = {
 	scope: 'global',
 	async execute(interaction) {
 
-		const membersWithRole = getOnlineUsersByRoleId(interaction, '553347167583076372');
+		const membersWithRole = getOnlineUsersByRoleId(interaction, '684791364185358387');
 
 		log(`${interaction.user.username} used 'princesses'.\nOnline princesses according to cache: ${membersWithRole.map(a => (a.user.username + ": " + a.presence.status)).join(", ")}`);
 
