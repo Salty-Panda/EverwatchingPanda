@@ -1,47 +1,41 @@
 const { SlashCommandBuilder } = require('discord.js');
+const { log, getOnlineUsersByRoleId } = require('./../../utils.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('princesses')
 		.setDescription('Posts message about princesses of undead'),
 	scope: 'global',
-	async execute(interaction, logChannel) {
-		// interaction.user is the object representing the User who ran the command
-		// interaction.member is the GuildMember object, which represents the user in the specific guild
-		// await interaction.reply(`This command was run by ${interaction.user.username}, who joined on ${interaction.member.joinedAt}.`);
+	async execute(interaction) {
 
-		const role = interaction.guild.roles.cache.find(role => role.id === '553347167583076372'); // Replace with the exact name of the role
-		if (role) {
+		const membersWithRole = getOnlineUsersByRoleId(interaction, '553347167583076372');
 
-			const membersWithRole = role.members.filter(member => member.presence && member.presence.status);
-			const onlineCount = membersWithRole.size;
+		log(`${interaction.user.username} used 'princesses'.\nOnline princesses according to cache: ${membersWithRole.map(a => (a.user.username + ": " + a.presence.status)).join(", ")}`);
 
-			if (onlineCount >= 1) {
-				let response;
+		let response;
 
-				switch (onlineCount) {
-					case 1:
-						response =
-							"There is only one princess of undead online and its...\n" +
-							member.user.nickname + "\n" +
-							"Remember, I'm watching";
-						break;
-					case 2:
-						response =
-							"There two princesses of undead online. That's enough to play ping-pong\n";
-						break;
-					case 3:
-						response = "Three princesses, cheers. That's enough to play three person chess\n" +
-							"But could you please pay more attention to the number of kings?";
-						break;
-				}
-
-				await interaction.reply(response);
-			} else {
-				await interaction.reply('There are no Princesses of Undead online. Have they left, or maybe ascended to Queens?');
-			}
-		} else {
-			await interaction.reply('Role not found.');
+		switch (membersWithRole.size) {
+			case 0:
+				response =
+					'There are no Princesses of Undead online. Have they left, or maybe ascended to Queens?';
+				break;
+			case 1:
+				response =
+					"There is only one princess of undead online and its...\n" +
+					interaction.member.user.nickname + "\n" +
+					"Remember, I'm watching";
+				break;
+			case 2:
+				response =
+					"There two princesses of undead online. That's enough to play ping-pong\n";
+				break;
+			case 3:
+				response = "Three princesses, cheers. That's enough to play three person chess\n" +
+					"But could you please pay more attention to the number of kings?";
+				break;
 		}
+
+		await interaction.reply(response);
+
 	},
 };

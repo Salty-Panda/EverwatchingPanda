@@ -1,13 +1,13 @@
 const fs = require('node:fs');
 const path = require('node:path');
-const { token, guildId, logChannelId } = require('./config.json');
+const { token} = require('./config.json');
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
+const { initDevChannel, log } = require('./utils');
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildPresences] });
 
 client.commands = new Collection();
 
-// eslint-disable-next-line no-undef
 const foldersPath = path.join(__dirname, 'commands');
 const commandFolders = fs.readdirSync(foldersPath);
 let channel;
@@ -26,26 +26,13 @@ for (const folder of commandFolders) {
 		}
 	}
 }
-// When the client is ready, run this code (only once)
-// We use 'c' for the event parameter to keep it separate from the already defined 'client'
+
 client.once(Events.ClientReady, c => {
 	console.log(`Ready! Logged in as ${c.user.tag}`);
-	const server = client.guilds.cache.get(guildId);
-	if (server) {
-		channel = server.channels.cache.get(logChannelId);
-		if (channel) {
-			console.log(`Connected to dev channel: ${channel.name}`);
-			channel.send(`Bot is up and running`); // Replace the message content with the desired message
-		} else {
-			console.log('Dev channel not found.');
-		}
-	} else {
-		console.log('Dev server not found.');
-	}
+	initDevChannel(client);
 
 });
-//console.log(token);
-// Log in to Discord with your client's token
+
 client.login(token);
 
 client.on(Events.InteractionCreate, async interaction => {
@@ -62,6 +49,7 @@ client.on(Events.InteractionCreate, async interaction => {
 		await command.execute(interaction, channel);
 	} catch (error) {
 		console.error(error);
+		log(error);
 		if (interaction.replied || interaction.deferred) {
 			await interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true });
 		} else {
